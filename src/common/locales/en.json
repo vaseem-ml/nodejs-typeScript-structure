@@ -1,0 +1,6 @@
+{
+
+    "ADD_SUCCESS": "Created Succesfully",
+    "FETCH_USERS_SUCCESS": "Fetched Users List Succesfully",
+    "OTP_CREATED_SUCCESS": "Otp has been generated succesfully"
+}
