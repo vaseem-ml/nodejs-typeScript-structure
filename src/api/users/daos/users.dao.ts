@@ -25,13 +25,17 @@ class UserDao {
 
 
     async addUser(userFields: CreateUserDto) {
-        const userId = shortid.generate();
-        const user = new this.User({
-            _id: userId,
-            ...userFields
-        });
-        await user.save();
-        return userId;
+        try{
+            const userId = shortid.generate();
+            const user = new this.User({
+                _id: userId,
+                ...userFields
+            });
+            await user.save();
+            return userId;
+        }catch(e) { 
+            console.log("error", e);
+        }
     }
 
     async getUsers(limit=25, page=0) {

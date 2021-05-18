@@ -10,7 +10,6 @@ class OtpDao {
     OtpSchema = new this.Schema({
         otp: Number,
         mobile: Number,
-        email: String,
     }, {timestamps: true});
 
 
@@ -22,12 +21,26 @@ class OtpDao {
 
 
     async addOtp(otpFields: createOtpDto) {
-        const otp = new this.Otp({
-            ...otpFields
-        });
-        await otp.save();
-        return otp;
+        try{
+            const otp = new this.Otp({
+                ...otpFields
+            });
+            await otp.save();
+            return otp;
+        }catch(e) {
+            console.log(e);
+        }
     };
+
+    async findOtp(otp: number) {
+        try{
+            
+            return this.Otp.count({otp: otp});
+
+        }catch(e) {
+            console.log(e);
+        }
+    }
 
 }
 

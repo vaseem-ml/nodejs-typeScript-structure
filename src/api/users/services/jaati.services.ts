@@ -1,27 +1,27 @@
 import debug from 'debug';
-import otpDao from '../daos/otp.dao';
+import jaatiDaos from '../daos/jaati.dao';
 import Helper from '../../../common/helper/helper';
-import { createOtpDto, mobileNumber } from '../dto/otp.dto';
+import { createJaatiDto } from '../dto/jaati.dto';
 import httpStatus from 'http-status-codes';
 import ResponseData from '../../../common/helper/responseData';
 
 const log: debug.IDebugger = debug('app:users-service');
 
-class UsersService {
+class DharmServices {
     async create(resources: any, request: any) {
         try{
-            const data = await Helper.otpGenerate(resources);
+            const data = await jaatiDaos.addJaati(resources);
             return new ResponseData({
                 status: httpStatus.OK,
-                msgTitle: "OTP_CREATED_SUCCESS",
+                msgTitle: "ADD_JAATI",
                 request: request
             });
         }catch(e) {
-            console.log('error', e);
+            console.log('eror', e);
         }
         
     }
 }
 
 
-export default new UsersService();
+export default new DharmServices();

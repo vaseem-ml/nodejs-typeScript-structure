@@ -1,7 +1,9 @@
 import express from 'express';
 import debug from 'debug';
+import Joi from 'joi';
 import usersServices from '../services/users.services';
-import { Controller, Route, Get, Post, BodyProp, Put, Delete, Path, Query, Security, Body, Header, Tags, Request } from 'tsoa';
+import { Controller, Route, Get, Post, BodyProp, Put, Path, Query, Security, Body, Header, Tags, Request } from 'tsoa';
+import bodyValidationMiddleware from '../../../common/middleware/body.validation.middleware';
 
 export interface User {
     email: string; 
@@ -20,7 +22,7 @@ export class usersController extends Controller {
     * Retrieves the details of an existing user.
     * Supply the unique user ID from either and receive corresponding user details.
     */
-    @Security("jwt", ["admin"])
+   // @Security("jwt", ["admin"])
     @Post("/users")
   //  @Tags("User Post")
     public async createUser(
@@ -29,7 +31,14 @@ export class usersController extends Controller {
         // @Query() designation?: string,
         @Body() requestBody: User,
     )  {
-        return  await usersServices.create(requestBody)
+       
+        const validate = await bodyValidationMiddleware.validateEmail(requestBody);
+        if(validate.success) {
+            return  await usersServices.create(requestBody)
+        } else {
+            return validate;
+        }
+
 	}
 
 
@@ -42,7 +51,6 @@ export class usersController extends Controller {
     @Header('accept-language') language: string,
     ) {
 
-        console.log('now you hit in controller tranfer function')
         return await usersServices.usersList(request);
     }
 }
